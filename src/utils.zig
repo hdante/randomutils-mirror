@@ -18,7 +18,7 @@ const std = @import("std");
 const nativeToBig = std.mem.nativeToBig;
 const log2_int = std.math.log2_int;
 
-pub const VERSION = "53.10.19";
+pub const VERSION_STRING = "randomutils version 53.10.19 (GNU General Public License)\n";
 
 pub const EXIT_SUCCESS = 0;
 pub const EXIT_FAILURE = 1;

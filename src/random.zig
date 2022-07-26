@@ -208,7 +208,7 @@ fn show_help() !void {
 }
 
 fn show_version() !void {
-        const version = "randomutils version " ++ utils.VERSION ++ "\n";
+        const version = utils.VERSION_STRING;
         try stdout.writeAll(version);
 }
 
