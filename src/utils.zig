@@ -20,6 +20,25 @@ const log2_int = std.math.log2_int;
 
 pub const VERSION = "53.10.19";
 
+pub const EXIT_SUCCESS = 0;
+pub const EXIT_FAILURE = 1;
+
+pub fn strerror(err: anyerror) [] const u8 {
+        // Replicate libc's strerror()
+        return switch (err) {
+                error.NoSpaceLeft => "No space left on device",
+                error.AccessDenied => "Operation not permitted",
+                error.BrokenPipe => "Broken pipe",
+                error.ConnectionResetByPeer => "Connection reset by peer",
+                error.DiskQuota => "Disk quota exceeded",
+                error.InputOutput => "Input/output error",
+                error.NotOpenForWriting => "Bad file descriptor",
+                error.WouldBlock => "Resource temporarily unavailable",
+                error.OutOfMemory => "Cannot allocate memory",
+                else => "Unknown error",
+        };
+}
+
 // Some fast and small number formatters for fun.
 
 fn len_d(value: u64) usize {

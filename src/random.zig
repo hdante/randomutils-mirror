@@ -27,9 +27,6 @@ const utils = @import("utils.zig");
 const ArgvIterator = sysdeps.ArgvIterator;
 const Generator = generator.Generator;
 
-const EXIT_SUCCESS = 0;
-const EXIT_FAILURE = 1;
-
 const Format = enum {
         d64,
         x64,
@@ -220,43 +217,27 @@ fn guarded_main() !u8 {
 
         parse_cmdline(&cfg) catch {
                 invalid_parameters();
-                return EXIT_FAILURE;
+                return utils.EXIT_FAILURE;
         };
 
         if (cfg.help) {
                 try show_help();
-                return EXIT_SUCCESS;
+                return utils.EXIT_SUCCESS;
         }
 
         if (cfg.version) {
                 try show_version();
-                return EXIT_SUCCESS;
+                return utils.EXIT_SUCCESS;
         }
 
         try run(cfg);
 
-        return EXIT_SUCCESS;
-}
-
-fn strerror(err: anyerror) [] const u8 {
-        // Replicate libc's strerror()
-        return switch (err) {
-                error.NoSpaceLeft => "No space left on device",
-                error.AccessDenied => "Operation not permitted",
-                error.BrokenPipe => "Broken pipe",
-                error.ConnectionResetByPeer => "Connection reset by peer",
-                error.DiskQuota => "Disk quota exceeded",
-                error.InputOutput => "Input/output error",
-                error.NotOpenForWriting => "Bad file descriptor",
-                error.WouldBlock => "Resource temporarily unavailable",
-                error.OutOfMemory => "Cannot allocate memory",
-                else => "Unknown error",
-        };
+        return utils.EXIT_SUCCESS;
 }
 
 pub fn main() u8 {
         return guarded_main() catch |err| {
-                stderr.print("random: {s}\n", .{ strerror(err) }) catch {};
-                return EXIT_FAILURE;
+                stderr.print("random: {s}\n", .{ utils.strerror(err) }) catch {};
+                return utils.EXIT_FAILURE;
         };
 }
