@@ -1,0 +1,185 @@
+RANDOM(1)
+=========
+:doctype: manpage
+:man source: randomutils
+:man version: 53.10.19
+:man manual: General Commands Manual
+:revdate: July 2022
+
+NAME
+----
+random - Generate 64-bit random numbers
+
+SYNOPSIS
+--------
+*random* [_OPTION_] [_count_ [_first_ [_last_]]]
+
+*random* *-h*|*-?*
+
+*random* *-v*
+
+DESCRIPTION
+-----------
+When executed without arguments, *random* generates a single unsigned 64-bit
+random number, considering a uniform distribution over the 64-bit range, and
+prints it to the output in decimal format. It accepts up to three numeric
+parameters in sequence, _count_, _first_ and _last_. The numeric parameters can
+be input as hexadecimal numbers by prepending the number with ``0x'', as octal
+numbers by prepending ``0o'' and as binary numbers by prepending ``0b''.
+
+The _count_ argument must be positive and chooses how many random numbers are
+generated.  Multiple numbers are printed one per line by default. The multiple
+numbers are independent from each other and may arbitrarily repeat. The _first_
+argument must be any unsigned 64-bit number and restricts the lower bound of
+acceptable results to start at _first_. The _last_ argument must be any unsigned
+64-bit number and restricts the upper bound of acceptable results to end at
+_last_. Both _first_ and _last_ are included in the range and may appear in the
+results.  Values chosen with the _first_ and _last_ bounds will also be
+uniformly generated. The _first_ argument must not be greater than _last_. The
+minimum possible result range happens when _first_ and _last_ are the same
+values (resulting in printing deterministic values equal to _first_ and _last_)
+and the maximum is 2⁶⁴ (when _first_ is 0 and _last_ is 2⁶⁴-1, the default).
+
+The random values are generated with a cryptographically secure pseudo-random
+number generator (CSPRNG), seeded by the operating system supplied entropy
+source, so it can be used in more situations than more common pseudo-random
+number generators. There's no option to change this behavior, using a CSPRNG is
+guaranteed.
+
+Option arguments are used to modify the output format. If multiple options with
+conflicting formats appear in the command line, the initial ones are ignored and
+the last ones are used. The list of options follows:
+
+*-x*::
+  Print numbers in hexadecimal format with lower case digits. The hexadecimal
+  numbers will not be prefixed with ``0x''.
+*-X*::
+  Print numbers in hexadecimal format with upper case digits. The hexadecimal
+  numbers will not be prefixed with ``0x''.
+*-b*::
+  Print numbers as a contiguous array of fixed length 64-bit binary numbers in
+  network byte order (big-endian). Options defining a separator character for
+  the numbers are ignored when using this format.  The binary numbers are
+  suitable to be passed to binary fixed-record processing tools (but may print
+  gibberish if displayed on a terminal screen). For example, piping the output
+  to the GNU coreutils *od* program:
+
+    $ random -b 4 1 10 | od --endian=big -t u8
+    0000000                    7                    1
+    0000020                    6                    2
+    0000040
+
+*-6*::
+  Print numbers as 64-bit binary numbers stored in network byte order
+  (big-endian), encoded in RFC 4648 base64url format without padding. The
+  printed numbers are suitable for URLs and directories, but may start with the
+  minus character, ``-'', which can be interpreted by scripting tools as the
+  symbol prefix used for passing option arguments. One way to avoid this is to
+  restrict the range of the generated numbers to one that always starts with an
+  alphanumeric character:
+
+    $ random -6 1 0 0xf7ffffffffffffff
+    7mxQKZ6DqjU    # (cannot start with "-")
+
+*-8*::
+  Print numbers as 64-bit binary numbers stored in network byte order
+  (big-endian), encoded in Ascii85 format without framing. The encoding folds 4
+  consecutive zero bytes into the single ``z'' character, but does not fold 4
+  consecutive spaces into ``y''. It's equivalent to Python's standard library
+  a85encode() with foldspaces=False and adobe=False.
+*-s*::
+  Use space as the number separator. This prints all generated numbers in a
+  single line, with a single newline character at the end.
+*-0*::
+  Use the zero (null) character as the number separator. This replaces newlines
+  separating the generated numbers by the non-printable null character and can
+  be used with programs that accepts textual lists in this format:
+
+    $ random -0 10 0 99 | xargs -0 echo
+    79 11 29 79 39 39 57 12 6 24
+
+*-h*, *-?*::
+  Show help message instead of generating random numbers.
+*-v*::
+  Show program version number instead of generating random numbers.
+
+EXAMPLES
+--------
+Generate a 64-bit random number.
+
+    $ random
+    6380544095752146087
+
+Generate 3 64-bit random numbers, outputting as upper case hexadecimal.
+
+   $ random -X 3
+   702219C987635D2
+   6D801A3D4C39ACA
+   7D4F63679F71A065
+
+Generate 10 64-bit random numbers from 1 to 0xfff, outputting as lower case
+hexadecimal in a single line.
+
+    $ random -sx 10 1 0xfff
+    2a7 f5 32d 65c acd 123 b53 ab6 ff8 8cd
+
+Generate a hexadecimal number, prefixing it with ``0x''.
+
+    $ echo 0x$(random -x 1 0 15)
+    0x7
+
+Create a directory with a random name, starting with a lower case ASCII
+character.
+
+    $ newdir=$(random -6 1 0x6800000000000000 0xcfffffffffffffff)
+    $ mkdir -pv $newdir
+    mkdir: created directory 'jKiE5TBpvJ4'
+
+Create a 10 symbol password.
+
+    $ random -8
+    ;Sp>Q/B?_#
+
+EXIT STATUS
+-----------
+*0*::
+  Success.
+
+*1*::
+  Failure (syntax or usage error; any I/O error; entropy system call error).
+
+RESULT BIAS
+-----------
+The program may generate biased results when the requested range is not a
+power of 2. A simple method is used to detect and reduce bias: whenever a
+number is generated that would be biased, it's discarded and a new random
+number is generated. This is retried a few times so that the probability of
+each new result being biased reduces exponentially. The program eventually
+gives up after a small number of times, so that it's not susceptible to large
+slowdowns. In the worst case, when the requested range is equal to 2⁶³+1, the
+probability of generating a biased result is guaranteed to be less than 0.05%
+(approximatelly 1 in 2¹¹). Biased results with the worst case scenario will
+appear with high probability when generating more than a few thousand values,
+so if the bias is undesired, it's recommended to use smaller ranges of up to
+2⁶². If no bias is acceptable, ranges that are powers of two must be used and
+are guaranteed to be unbiased (including 2⁶³ and the full range 2⁶⁴).
+
+CRYPTANALYSIS
+-------------
+Current code utilizes an implementation of the 20-round Chacha20 cipher with
+native-endian 32-bit integer numbers (it does not consider numbers to be
+little-endian). The code was not reviewed by a cryptanalist.
+
+It's known that the performance characteristics of the program change with
+the requested ranges and options.
+
+AUTHOR
+------
+Henrique Dante de Almeida, <hdante@gmail.com>.
+
+COPYRIGHT
+---------
+Copyright © 2022 Henrique Dante de Almeida. License GPLv3: GNU GPL version 3,
+<https://gnu.org/licenses/gpl.html>. This is free software: you are free to
+change and redistribute it. There is NO WARRANTY, to the extent permitted by
+law.
