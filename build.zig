@@ -10,4 +10,5 @@ pub fn build(std_builder: *std.build.Builder) void {
         builder.executable("random", "src/random.zig");
         builder.executable("lottery", "src/lottery.zig");
         builder.test_("src/tests.zig");
+        builder.manpage("man1/random.1", "doc/random.1.txt");
 }
