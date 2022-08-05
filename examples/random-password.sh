@@ -24,7 +24,7 @@ fi
 i=1
 while [ $i -le "$NUM_PASSWORDS" ]
 do
-	prefix=$("$RANDOM_" -8 | head -c 3)
+	prefix=$("$RANDOM_" -8 1 0x100000000 | head -c 3)
 	words=$("$RANDOM_" "$WORDS_PER_PASSWORD" 1 "$dictionary_size" |
 		xargs -I@ sed -n "@{p;q}" "$DICTIONARY")
 	echo "$prefix":-$(echo "$words" | tr "\n" "$WORD_SEPARATOR")
