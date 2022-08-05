@@ -36,7 +36,7 @@ pub const ArgvIterator = struct {
                 self.inner.deinit();
         }
 
-        pub fn next(self: *ArgvIterator) ?(anyerror![:0] const u8) {
+        pub fn next(self: *ArgvIterator) ?(anyerror![:0]const u8) {
                 // Some effort is necessary here to avoid unnecessary dynamic allocations
                 // and to work around API changes of the Zig standard library.
                 if (@typeInfo(@TypeOf(ArgIterator.next)).Fn.args.len == 1) {

@@ -30,7 +30,7 @@ const Chacha20NativeEndianVector = struct {
         const ALIGNMENT = 16;
         const SEED_SIZE = 48;
 
-        state: [BLOCK_COUNT] u32 align(ALIGNMENT),
+        state: [BLOCK_COUNT]u32 align(ALIGNMENT),
 
         const HEADER align(ALIGNMENT) = "expand 32-byte k".*;
         const HEADER_SIZE = 16;
@@ -40,7 +40,7 @@ const Chacha20NativeEndianVector = struct {
 
         fn init() Self {
                 var self: Self = undefined;
-                @memcpy(@ptrCast([*] u8, &self.state), &HEADER, HEADER_SIZE);
+                @memcpy(@ptrCast([*]u8, &self.state), &HEADER, HEADER_SIZE);
                 self.state[COUNTER0] = 0;
                 return self;
         }
@@ -70,7 +70,7 @@ const Chacha20NativeEndianVector = struct {
                 c.* +%= d.*; b.* ^= c.*; b.* = math.rotl(@Vector(4, u32), b.*, 7);
         }
 
-        fn generate(self: Self, buffer: *[BLOCK_COUNT] u32) void {
+        fn generate(self: Self, buffer: *[BLOCK_COUNT]u32) void {
                 var a: @Vector(4, u32) = undefined;
                 var b: @Vector(4, u32) = undefined;
                 var c: @Vector(4, u32) = undefined;
@@ -129,7 +129,7 @@ const Chacha20NativeEndian = struct {
         const U64_COUNT = 8;
         const ALIGNMENT = 16;
 
-        state: [BLOCK_COUNT] u32,
+        state: [BLOCK_COUNT]u32,
 
         const HEADER align(ALIGNMENT) = "expand 32-byte k".*;
         const HEADER_SIZE = 16;
@@ -139,7 +139,7 @@ const Chacha20NativeEndian = struct {
 
         fn init() Self {
                 var self = Self { .state = undefined };
-                @memcpy(@ptrCast([*] u8, &self.state), &HEADER, HEADER_SIZE);
+                @memcpy(@ptrCast([*]u8, &self.state), &HEADER, HEADER_SIZE);
                 self.state[COUNTER0] = 0;
                 return self;
         }
@@ -168,7 +168,7 @@ const Chacha20NativeEndian = struct {
                 c.* +%= d.*; b.* ^= c.*; b.* = math.rotl(u32, b.*, 7);
         }
 
-        fn generate(self: Self, buffer: *[BLOCK_COUNT] u32) void {
+        fn generate(self: Self, buffer: *[BLOCK_COUNT]u32) void {
                 mem.copy(u32, buffer, &self.state);
 
                 var i: usize = 0;
@@ -195,7 +195,7 @@ pub const Generator = struct {
         const RANDOM_COUNT = Source.U64_COUNT;
 
         source: Source,
-        data: [RANDOM_COUNT] u64 align(Source.ALIGNMENT),
+        data: [RANDOM_COUNT]u64 align(Source.ALIGNMENT),
         entropy: Entropy,
         count: usize,
         first: u64,
@@ -245,7 +245,7 @@ pub const Generator = struct {
                         try self.source.seed(&self.entropy);
                 }
 
-                const p = @ptrCast(*[Source.BLOCK_COUNT] u32, &self.data);
+                const p = @ptrCast(*[Source.BLOCK_COUNT]u32, &self.data);
                 self.source.generate(p);
                 self.source.next();
                 self.count = RANDOM_COUNT;
@@ -431,7 +431,7 @@ fn test_chacha_test_vector_1(comptime Type: type) !void {
         chacha.state[13] = 224;
         chacha.state[14] = 240;
         chacha.state[15] = 1;
-        var buffer: [16] u32 = undefined;
+        var buffer: [16]u32 = undefined;
         chacha.generate(&buffer);
         try expect(buffer[0] == 0xa14250d1);
         try expect(buffer[1] == 0xe3bfa265);
@@ -455,7 +455,7 @@ fn test_chacha_test_identity(comptime Type: type) !void {
         var chacha = Type.init();
         defer chacha.deinit();
         for (chacha.state) |*v| v.* = 0;
-        var buffer: [16] u32 = undefined;
+        var buffer: [16]u32 = undefined;
         chacha.generate(&buffer);
         for (buffer) |v| {
                 try expect(v == 0);
@@ -463,7 +463,7 @@ fn test_chacha_test_identity(comptime Type: type) !void {
 }
 
 fn test_chacha_test_draft_agl_tls_chacha20poly1305(comptime Type: type) !void {
-        const INPUT = [_][48] u8 {
+        const INPUT = [_][48]u8 {
                 ("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" ++
                  "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" ++
                  "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00").*,
@@ -478,7 +478,7 @@ fn test_chacha_test_draft_agl_tls_chacha20poly1305(comptime Type: type) !void {
                  "\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07").*,
         };
 
-        const OUTPUT = [INPUT.len][64] u8 {
+        const OUTPUT = [INPUT.len][64]u8 {
                 ("\x76\xb8\xe0\xad\xa0\xf1\x3d\x90\x40\x5d\x6a\xe5\x53\x86\xbd\x28\xbd" ++
                  "\xd2\x19\xb8\xa0\x8d\xed\x1a\xa8\x36\xef\xcc\x8b\x77\x0d\xc7\xda\x41" ++
                  "\x59\x7c\x51\x57\x48\x8d\x77\x24\xe0\x3f\xb8\xd8\x4a\x37\x6a\x43\xb8" ++
@@ -505,7 +505,7 @@ fn test_chacha_test_draft_agl_tls_chacha20poly1305(comptime Type: type) !void {
                 for (chacha.state) |*v| {
                         v.* = mem.littleToNative(u32, v.*);
                 }
-                var buffer: [16] u32 = undefined;
+                var buffer: [16]u32 = undefined;
                 chacha.generate(&buffer);
                 for (buffer) |*v| {
                         v.* = mem.nativeToLittle(u32, v.*);

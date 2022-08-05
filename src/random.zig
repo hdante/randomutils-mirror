@@ -60,7 +60,7 @@ fn more(cfg: Config, gen: *Generator, count: u64) !usize {
         const MAX_NUMBERS = 700;
         const MAX_LENGTH = 21;
         const BUFFER_LENGTH = MAX_NUMBERS*MAX_LENGTH;
-        var buffer: [BUFFER_LENGTH] u8 = undefined;
+        var buffer: [BUFFER_LENGTH]u8 = undefined;
 
         var i: u64 = 0;
         var p: usize = 0;
