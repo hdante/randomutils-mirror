@@ -327,7 +327,7 @@ fn test_chacha_seeding(comptime Type: type) !void {
         entropy.mock(Entropy.entropy_all_ones);
         try chacha.seed(&entropy);
         const bytes = mem.sliceAsBytes(chacha.state[Type.HEADER_COUNT..]);
-        try expect(eql(u8, bytes, "111111111111111111111111111111111111111111111111"));
+        try expect(eql(u8, bytes, "1" ** 48));
         entropy.mock(Entropy.entropy_sequence);
         try chacha.seed(&entropy);
         for (bytes) |ch, i| {
