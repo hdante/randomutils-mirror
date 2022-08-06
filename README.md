@@ -130,7 +130,7 @@ program instead:
 
 ```
 $ lottery 6 1 60    # generate 6 numbers from 1 to 60, no repetition
-46 20 21 13 44 32 
+46 20 21 13 44 32
 ```
 
 ## Cryptanalysis

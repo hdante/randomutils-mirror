@@ -74,7 +74,12 @@ fn run(cfg: Config) !void {
                 if (check_bit(addr)) {
                         set_bit(addr);
                         i += 1;
-                        try stdout.print("{} ", .{r});
+                        if (i < cfg.count) {
+                                try stdout.print("{} ", .{r});
+                        }
+                        else {
+                                try stdout.print("{}", .{r});
+                        }
                 }
         }
         try stdout.writeAll("\n");
