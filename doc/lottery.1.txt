@@ -1,0 +1,81 @@
+LOTTERY(1)
+=========
+:doctype: manpage
+:man source: randomutils
+:man version: 53.10.19
+:man manual: General Commands Manual
+:revdate: August 2022
+
+NAME
+----
+lottery - Generate random numbers without repetition
+
+SYNOPSIS
+--------
+*lottery* [_count_ [_first_ [_last_]]]
+
+*lottery* *-h*|*-?*
+
+*lottery* *-v*
+
+DESCRIPTION
+-----------
+Generates _count_ numbers (default: 6), starting from _first_, up to _last_
+(default: from 1 to 60). The numbers generated are printed on a single line. The
+generated numbers will be uniformly distributed.
+
+The _count_ argument must be a positive number and chooses how many random
+numbers are generated. The generated numbers never repeat. The _first_ and
+_last_ arguments must be unsigned 64-bit numbers. Both _first_ and _last_ are
+included in the range and may appear in the results. The _first_ argument must
+be smaller than _last_. The minimum possible result range is 2, when _last_ is
+one more than _first_ and the maximum is 1048576 (slightly more than 1 million).
+The requested _count_ must be smaller than the requested range.
+
+The random values are generated with a cryptographically secure pseudo-random
+number generator (CSPRNG), seeded by the operating system supplied entropy
+source.
+
+Option arguments are the following:
+
+*-h*, *-?*::
+  Show help message instead of generating random numbers.
+*-v*::
+  Show program version number instead of generating random numbers.
+
+EXAMPLES
+--------
+Generate 6 numbers for a lottery ticket, ranging from 1 to 60:
+
+    $ lottery
+    42 51 18 40 59 30
+
+Generate 5 numbers, from 100 to 159:
+
+    $ lottery 5 100 159
+    142 125 109 127 159
+
+EXIT STATUS
+-----------
+*0*::
+  Success.
+
+*1*::
+  Failure (syntax or usage error; any I/O error; entropy system call error).
+
+CRYPTANALYSIS
+-------------
+Current code utilizes an implementation of the 20-round Chacha20 cipher with
+native-endian 32-bit integer numbers (it does not consider numbers to be
+little-endian). The code was not reviewed by a cryptanalist.
+
+AUTHOR
+------
+Henrique Dante de Almeida, <hdante@gmail.com>.
+
+COPYRIGHT
+---------
+Copyright © 2022 Henrique Dante de Almeida. License GPLv3: GNU GPL version 3,
+<https://gnu.org/licenses/gpl.html>. This is free software: you are free to
+change and redistribute it. There is NO WARRANTY, to the extent permitted by
+law.
