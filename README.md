@@ -140,6 +140,6 @@ It's known that the performance characteristics of the programs change with
 the requested ranges and options.
 
 ## License
-Source code is released under the GNU General Public License. This is free
+The software is released under the GNU General Public License. This is free
 software: you are free to change and redistribute it. There is NO WARRANTY, to
 the extent permitted by law.
