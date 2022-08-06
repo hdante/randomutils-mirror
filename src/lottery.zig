@@ -122,15 +122,16 @@ fn parse_cmdline(cfg: *Config) !void {
                         }
                         else if (argidx == 3) {
                                 cfg.last = value;
-                                if (cfg.last < cfg.first) return error.InvalidParameters;
-                                const range = cfg.last - cfg.first +| 1;
-                                if (range > MAX_RANGE) return error.InvalidParameters;
-                                if (range <= cfg.count) return error.InvalidParameters;
                         }
 
                         argidx += 1;
                 }
         }
+
+        if (cfg.last < cfg.first) return error.InvalidParameters;
+        const range = cfg.last - cfg.first +| 1;
+        if (range > MAX_RANGE) return error.InvalidParameters;
+        if (range <= cfg.count) return error.InvalidParameters;
 }
 
 fn invalid_parameters() void {
