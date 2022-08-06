@@ -4,7 +4,7 @@
  <img src="/meme.jpg" width="50%">
 </figure>
 
-Welcome to the randomutils source code repository. The project is a set of tools
+Welcome to the **randomutils** source code repository. The project is a set of tools
 for generating 64-bit random numbers and is focused on allowing easy, fast and
 secure random number generation in shell scripts.
 
@@ -44,14 +44,14 @@ $ random
     script in the examples directory can be used for this measurement).
 - The code for the cryptographic primitive used is software-based, not
   depending on accellerated hardware instructions (except that it supports
-  vector instructions), so it's trivially portable. Currently, randomutils
+  vector instructions), so it's trivially portable. Currently, **randomutils**
   uses the 20-round Chacha20 cipher (the same cipher used by OpenBSD
   arc4random).
 - There are tools for generating a set of independent numbers (`random`) and a
   set of numbers without repetition (`lottery`).
 
 ## Supported platforms
-randomutils is cross-platform should be easily portable to Unix-like systems and
+**randomutils** is cross-platform should be easily portable to Unix-like systems and
 Windows. However, it has only been tested on Linux at the moment.
 
 ## Build requirements
