@@ -162,6 +162,8 @@ fn show_help() !void {
       \\
       \\Generates random numbers for lottery tickets without repetition, without bias.
       \\Accepts numbers with a maximum range of 1048576 (slightly more than 1 million).
+      \\<first> must be smaller than <last> and <count> must be smaller than the
+      \\requested range.
       \\
  ;
         try stdout.writeAll(help);
