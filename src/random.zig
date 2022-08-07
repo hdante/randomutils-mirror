@@ -95,8 +95,10 @@ fn more(cfg: Config, gen: *Generator, count: u64) !usize {
 }
 
 fn run(cfg: Config) !void {
-        var gen = try Generator.init(cfg.first, cfg.last);
+        var gen = try Generator.init();
         defer gen.deinit();
+
+        gen.randint_set_range(cfg.first, cfg.last);
 
         var count = cfg.count;
         while (count > 0) {
