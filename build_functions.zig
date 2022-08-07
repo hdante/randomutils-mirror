@@ -76,7 +76,7 @@ pub const ManpageStep = struct {
         fn make_one(self: *ManpageStep, manpage: Manpage) !void {
                 const build_path = self.builder.pathJoin(&.{self.build_dir, manpage.dest});
                 const build_dir = path.dirname(build_path).?;
-                const cmdline = &.{A2X_PROGNAME, "-d", "manpage", "-f", "manpage", "-D",
+                const cmdline = &.{self.a2x, "-d", "manpage", "-f", "manpage", "-D",
                         build_dir, manpage.source};
                 try self.builder.makePath(build_dir);
 
