@@ -64,6 +64,7 @@ fn set_bit(addr: BitAddress) void {
 
 fn run(cfg: Config) !void {
         var gen = try Generator.init(cfg.first, cfg.last);
+        defer gen.deinit();
 
         var i: u32 = 0;
         while (i < cfg.count) {
