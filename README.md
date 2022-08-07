@@ -4,9 +4,9 @@
  <img src="/meme.jpg" width="50%">
 </figure>
 
-Welcome to the **randomutils** source code repository. The project is a set of tools
-for generating 64-bit random numbers and is focused on allowing easy, fast and
-secure random number generation in shell scripts.
+Welcome to the **randomutils** source code repository. The project is a set of
+tools for generating 64-bit random numbers and is focused on allowing easy, fast
+and secure random number generation in shell scripts.
 
 Basic usage is trivial:
 
@@ -16,9 +16,9 @@ $ random
 ```
 
 ## Features
-- Random number generation is done with a [cryptographically secure pseudo-random
-  number generator][1] (CSPRNG), seeded by the operating system supplied entropy
-  source. The seed is unpredictable and randomly refreshed.
+- Random number generation is done with a [cryptographically secure
+  pseudo-random number generator][1] (CSPRNG), seeded by the operating system
+  supplied entropy source. The seed is unpredictable and randomly refreshed.
 - The tools may generate multiple numbers from a specified interval and they
   attempt to remove any bias when generating numbers from ranges that are not a
   power of 2.
@@ -38,21 +38,21 @@ $ random
     laptop, or one 64-bit random number every 40 nanoseconds (so that, in case
     something really random happens to you and you find yourself in need of 25
     million random numbers, you'll have them in 1 second).
-  - On a more pragmatic side, when generating 1 random number per execution,
-    it can be executed around 2800 times per second, most of the time being
-    spent on the shell interpreter and program execution (the `manyrandom.sh`
-    script in the [examples directory](examples/) can be used for this measurement).
-- The code for the cryptographic primitive used is software-based, not
-  depending on accellerated hardware instructions (except that it supports
-  vector instructions), so it's trivially portable. Currently, **randomutils**
-  uses the 20-round [Chacha20 cipher][2] (the same cipher used by OpenBSD
+  - On a more pragmatic side, when generating 1 random number per execution, it
+    can be executed around 2800 times per second, most of the time being spent
+    on the shell interpreter and program execution (the `manyrandom.sh` script
+    in the [examples directory](examples/) can be used for this measurement).
+- The code for the cryptographic primitive used is software-based, not depending
+  on accellerated hardware instructions (except that it supports vector
+  instructions), so it's trivially portable. Currently, **randomutils** uses the
+  20-round [Chacha20 cipher][2] (the same cipher used by OpenBSD
   [arc4random][3]).
 - There are tools for generating a set of independent numbers (`random`) and a
   set of numbers without repetition (`lottery`).
 
 ## Supported platforms
-**randomutils** is cross-platform should be easily portable to Unix-like systems and
-Windows. However, it has only been tested on Linux at the moment.
+**randomutils** is cross-platform should be easily portable to Unix-like systems
+and Windows. However, it has only been tested on Linux at the moment.
 
 ## Build requirements
 - [Zig][4] compiler (tested with version 0.9.1)
