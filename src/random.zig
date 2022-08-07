@@ -208,8 +208,7 @@ fn show_help() !void {
 }
 
 fn show_version() !void {
-        const version = utils.VERSION_STRING;
-        try stdout.writeAll(version);
+        try stdout.writeAll(utils.VERSION_STRING);
 }
 
 fn guarded_main() !u8 {
