@@ -16,8 +16,8 @@ $ random
 ```
 
 ## Features
-- Random number generation is done with a cryptographically secure pseudo-random
-  number generator (CSPRNG), seeded by the operating system supplied entropy
+- Random number generation is done with a [cryptographically secure pseudo-random
+  number generator][1] (CSPRNG), seeded by the operating system supplied entropy
   source. The seed is unpredictable and randomly refreshed.
 - The tools may generate multiple numbers from a specified interval and they
   attempt to remove any bias when generating numbers from ranges that are not a
@@ -41,12 +41,12 @@ $ random
   - On a more pragmatic side, when generating 1 random number per execution,
     it can be executed around 2800 times per second, most of the time being
     spent on the shell interpreter and program execution (the `manyrandom.sh`
-    script in the examples directory can be used for this measurement).
+    script in the [examples directory](examples/) can be used for this measurement).
 - The code for the cryptographic primitive used is software-based, not
   depending on accellerated hardware instructions (except that it supports
   vector instructions), so it's trivially portable. Currently, **randomutils**
-  uses the 20-round Chacha20 cipher (the same cipher used by OpenBSD
-  arc4random).
+  uses the 20-round [Chacha20 cipher][2] (the same cipher used by OpenBSD
+  [arc4random][3]).
 - There are tools for generating a set of independent numbers (`random`) and a
   set of numbers without repetition (`lottery`).
 
@@ -55,8 +55,8 @@ $ random
 Windows. However, it has only been tested on Linux at the moment.
 
 ## Build requirements
-- Zig compiler (tested with version 0.9.1)
-- AsciiDoc (optional, required for building manual pages)
+- [Zig][4] compiler (tested with version 0.9.1)
+- [AsciiDoc][5] (optional, required for building manual pages)
 
 ## Build and install instructions
 ```
@@ -115,7 +115,7 @@ rO5;3VWI?W
 
 The random numbers may be also output in binary format and passed to other
 programs that process binary input. Here's an example of piping the binary
-output to the od(1) program:
+output to the [od(1)][6] program:
 
 ```
 $ random 4 55000 56000 -b | od --endian=big -t u8
@@ -140,6 +140,14 @@ It's known that the performance characteristics of the programs change with
 the requested ranges and options.
 
 ## License
-The software is released under the GNU General Public License. This is free
+The software is released under the [GNU General Public License][7]. This is free
 software: you are free to change and redistribute it. There is NO WARRANTY, to
 the extent permitted by law.
+
+[1]: https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator
+[2]: https://cr.yp.to/chacha.html
+[3]: https://man.openbsd.org/arc4random.3
+[4]: https://ziglang.org/
+[5]: https://asciidoc.org/
+[6]: https://www.gnu.org/software/coreutils/manual/html_node/od-invocation.html
+[7]: https://www.gnu.org/licenses/gpl-3.0.en.html
