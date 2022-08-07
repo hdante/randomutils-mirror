@@ -162,17 +162,17 @@ fn parse_cmdline(cfg: *Config) !void {
 }
 
 fn invalid_parameters() void {
-        const invalid =
+        const INVALID =
       \\random: Invalid parameters.
       \\Try 'random -h' for more information.
       \\
       ;
 
-        stderr.writeAll(invalid) catch {};
+        stderr.writeAll(INVALID) catch {};
 }
 
 fn show_help() !void {
-        const help =
+        const HELP =
       \\Generate 64-bit random numbers.
       \\
       \\Usage:
@@ -204,7 +204,7 @@ fn show_help() !void {
       \\them within the requested range.
       \\
  ;
-        try stdout.writeAll(help);
+        try stdout.writeAll(HELP);
 }
 
 fn show_version() !void {

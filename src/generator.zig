@@ -79,9 +79,9 @@ const Chacha20NativeEndianVector = struct {
                 var y: @Vector(4, u32) = undefined;
                 var z: @Vector(4, u32) = undefined;
                 var w: @Vector(4, u32) = undefined;
-                const rotl1 = @Vector(4, i32) { 1, 2, 3, 0 };
-                const rotl2 = @Vector(4, i32) { 2, 3, 0, 1 };
-                const rotl3 = @Vector(4, i32) { 3, 0, 1, 2 };
+                const ROTL1 = @Vector(4, i32) { 1, 2, 3, 0 };
+                const ROTL2 = @Vector(4, i32) { 2, 3, 0, 1 };
+                const ROTL3 = @Vector(4, i32) { 3, 0, 1, 2 };
 
                 for (self.state[0..4]) |v, i| { a[i] = v; }
                 for (self.state[4..8]) |v, i| { b[i] = v; }
@@ -96,15 +96,15 @@ const Chacha20NativeEndianVector = struct {
                 while (i < 10) : (i += 1) {
                         round(&a, &b, &c, &d);
 
-                        b = @shuffle(u32, b, undefined, rotl1);
-                        c = @shuffle(u32, c, undefined, rotl2);
-                        d = @shuffle(u32, d, undefined, rotl3);
+                        b = @shuffle(u32, b, undefined, ROTL1);
+                        c = @shuffle(u32, c, undefined, ROTL2);
+                        d = @shuffle(u32, d, undefined, ROTL3);
 
                         round(&a, &b, &c, &d);
 
-                        b = @shuffle(u32, b, undefined, rotl3);
-                        c = @shuffle(u32, c, undefined, rotl2);
-                        d = @shuffle(u32, d, undefined, rotl1);
+                        b = @shuffle(u32, b, undefined, ROTL3);
+                        c = @shuffle(u32, c, undefined, ROTL2);
+                        d = @shuffle(u32, d, undefined, ROTL1);
                 }
 
                 a +%= x;

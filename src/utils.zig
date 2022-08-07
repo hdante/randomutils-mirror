@@ -43,14 +43,14 @@ pub fn strerror(err: anyerror) []const u8 {
 
 fn len_d(value: u64) usize {
         // A fast decimal number length calculator.
-        const digits = [65]u8 {
+        const DIGITS = [65]u8 {
                 19, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 16,
                 15, 15, 15, 14, 14, 14, 13, 13, 13, 13, 12, 12, 12, 11,
                 11, 11, 10, 10, 10, 10, 9, 9, 9, 8, 8, 8, 7, 7, 7, 7,
                 6, 6, 6, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1,
                 1, 1, 1,
         };
-        const change = [65]u64 {
+        const CHANGE = [65]u64 {
                 10000000000000000000, 10000000000000000000, 10000000000000000000,
                 10000000000000000000, 1000000000000000000, 1000000000000000000,
                 1000000000000000000, 100000000000000000, 100000000000000000,
@@ -67,8 +67,8 @@ fn len_d(value: u64) usize {
         };
 
         const z = @clz(u64, value);
-        var d = digits[z];
-        if (value >= change[z])
+        var d = DIGITS[z];
+        if (value >= CHANGE[z])
                 d += 1;
 
         return @intCast(usize, d);
@@ -77,7 +77,7 @@ fn len_d(value: u64) usize {
 pub fn fmt_d(buffer: []u8, value: u64) usize {
         // A well-known fast decimal number formatter (2 digit LUT, with backwards
         // buffer filling).
-        const digits =
+        const DIGITS =
                 "000102030405060708091011121314151617181920212223242526272829" ++
                 "303132333435363738394041424344454647484950515253545556575859" ++
                 "606162636465666768697071727374757677787980818283848586878889" ++
@@ -90,10 +90,10 @@ pub fn fmt_d(buffer: []u8, value: u64) usize {
                 var r = v % 100;
                 v /= 100;
                 // No safety check here, slice must have the proper range.
-                @memcpy(buffer[l-2..l].ptr, digits[r*2..r*2+2].ptr, 2);
+                @memcpy(buffer[l-2..l].ptr, DIGITS[r*2..r*2+2].ptr, 2);
         }
         if (l == 1)
-                buffer[0] = digits[(v % 10)*2+1];
+                buffer[0] = DIGITS[(v % 10)*2+1];
 
         return length;
 }
@@ -104,7 +104,7 @@ fn len_x(value: u64) usize {
 }
 
 pub fn fmt_x(buffer: []u8, value: u64, upper: bool) usize {
-        const digits  = [2][16]u8{ "0123456789abcdef".*, "0123456789ABCDEF".* };
+        const DIGITS  = [2][16]u8{ "0123456789abcdef".*, "0123456789ABCDEF".* };
         const length = len_x(value);
         const u = @boolToInt(upper);
 
@@ -113,7 +113,7 @@ pub fn fmt_x(buffer: []u8, value: u64, upper: bool) usize {
         while (l > 0) : (l -= 1) {
                 var r = v % 16;
                 v /= 16;
-                buffer[l-1] = digits[u][r];
+                buffer[l-1] = DIGITS[u][r];
         }
 
         return length;
@@ -128,17 +128,17 @@ pub fn fmt_bin(buffer: []u8, value: u64) usize {
 }
 
 pub fn fmt_base64url(buffer: []u8, value: u64) usize {
-        const digits =
+        const DIGITS =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
         var i: usize = 0;
         var shift: u6 = 58;
         while (i < 10) : (i += 1) {
-                buffer[i] = digits[(value >> shift) & 0x3f];
+                buffer[i] = DIGITS[(value >> shift) & 0x3f];
                 shift -%= 6;
         }
 
-        buffer[10] = digits[(value << 2) & 0x3f];
+        buffer[10] = DIGITS[(value << 2) & 0x3f];
 
         return 11;
 }

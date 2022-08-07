@@ -140,17 +140,17 @@ fn parse_cmdline(cfg: *Config) !void {
 }
 
 fn invalid_parameters() void {
-        const invalid =
+        const INVALID =
       \\lottery: Invalid parameters.
       \\Try 'lottery -h' for more information.
       \\
       ;
 
-        stderr.writeAll(invalid) catch {};
+        stderr.writeAll(INVALID) catch {};
 }
 
 fn show_help() !void {
-        const help =
+        const HELP =
       \\Generate numbers for lottery tickets.
       \\
       \\Usage:
@@ -171,7 +171,7 @@ fn show_help() !void {
       \\requested range.
       \\
  ;
-        try stdout.writeAll(help);
+        try stdout.writeAll(HELP);
 }
 
 fn show_version() !void {

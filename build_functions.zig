@@ -13,14 +13,14 @@ fn get_timestamp(file: []const u8) !i128 {
 }
 
 fn needs_update(dependency: []const u8, target: []const u8) !bool {
-        const slack_ns = 1000000000;
+        const SLACK_NS = 1000000000;
         const time1 = try get_timestamp(dependency);
         const time2 = get_timestamp(target) catch |err| {
                 if (err == error.FileNotFound) return true;
                 return err;
         };
         const diff = time2 -| time1;
-        return (diff <= slack_ns);
+        return (diff <= SLACK_NS);
 }
 
 fn remove_extension(file: []const u8) []const u8 {
