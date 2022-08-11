@@ -1,0 +1,100 @@
+ROLL(1)
+=========
+:doctype: manpage
+:man source: randomutils
+:man version: 53.10.19
+:man manual: General Commands Manual
+:revdate: August 2022
+
+NAME
+----
+roll - Generate 64-bit random numbers
+
+SYNOPSIS
+--------
+*roll* [_OPTION_] (<x>|<x>d<y>)...
+
+*roll* *-h*|*-?*
+
+*roll* *-v*
+
+DESCRIPTION
+-----------
+Generates random numbers uniformly within a range, by default from 1 to 6. The
+program accepts multiple parameters to specify different amounts and ranges. For
+each parameter given, the corresponding generated values are printed in a single
+line, with values separated by spaces, if the requested amount is larger than
+one.
+
+The number of values to be generated may be specified with the _x_ parameter and
+must positive. If both the number of values and the range need be specified,
+then the parameter should have a number _x_ for the count, followed by the ``d''
+character, followed by the range size, _y_ (this is similar to the common RPG
+dice notation). For example, to generate 3 numbers from 1 to 10, the parameter
+is ``3d10''. The range may be any positive 64-bit value and includes the initial
+and final values.
+
+The random values are generated with a cryptographically secure pseudo-random
+number generator (CSPRNG), seeded by the operating system supplied entropy
+source, so it can be used in more situations than more common pseudo-random
+number generators. There's no option to change this behavior, using a CSPRNG is
+guaranteed.
+
+Option arguments are used to modify the output format. If multiple options with
+conflicting formats appear in the command line, the initial ones are ignored and
+the last ones are used. The list of options follows:
+
+*-d*::
+  Print Unicode dice characters instead of numeric output, with the dice faces
+  indicating the numeric value. The range must be at most 6. Smaller ranges omit
+  the higher valued rolls. The characters are always encoded in the UTF-8
+  format.
+*-c*::
+  Print Unicode French deck characters instead of numeric output. The range must
+  be at most 13. For the purpose of range selection, the cards are considered to
+  have values between 1 and 13, in the following order: Ace, 2, 3, 4, 5, 6, 7,
+  8, 9, 10, Jack, Queen, King. Smaller ranges omit the higher valued cards. The
+  characters are always encoded in the UTF-8 format. The suits on the cards are
+  random andd may be one of: Spades, Hearts, Diamonds or Clubs.
+*-h*, *-?*::
+  Show help message instead of generating random numbers.
+*-v*::
+  Show program version number instead of generating random numbers.
+
+EXAMPLES
+--------
+Generate a number between 1 and 6:
+
+    $ roll
+    4
+
+Generate 3 numbers between 1 and 6 and 1 number between 1 and 20:
+
+    $ roll 3d6 1d20
+    3 6 3
+    19
+
+EXIT STATUS
+-----------
+*0*::
+  Success.
+
+*1*::
+  Failure (syntax or usage error; any I/O error; entropy system call error).
+
+CRYPTANALYSIS
+-------------
+Current code utilizes an implementation of the 20-round Chacha20 cipher with
+native-endian 32-bit integer numbers (it does not consider numbers to be
+little-endian). The code was not reviewed by a cryptanalist.
+
+AUTHOR
+------
+Henrique Dante de Almeida, <hdante@gmail.com>.
+
+COPYRIGHT
+---------
+Copyright © 2022 Henrique Dante de Almeida. License GPLv3: GNU GPL version 3,
+<https://gnu.org/licenses/gpl.html>. This is free software: you are free to
+change and redistribute it. There is NO WARRANTY, to the extent permitted by
+law.
