@@ -133,6 +133,14 @@ $ lottery 6 1 60    # generate 6 numbers from 1 to 60, no repetition
 46 20 21 13 44 32
 ```
 
+The `roll` program may also be used to generate random numbers and accepts
+parameters in common RPG dice notation:
+
+```
+$ roll 3d6    # generate 3 numbers from 1 to 6
+4 1 5
+```
+
 ## Cryptanalysis
 The code was not reviewed by a cryptanalyst.
 
