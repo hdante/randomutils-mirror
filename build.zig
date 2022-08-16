@@ -6,7 +6,7 @@ const Builder = build_functions.Builder;
 pub fn build(std_builder: *std.build.Builder) void {
         var builder = Builder.init(std_builder);
         builder.standard_target_options();
-        builder.standard_build_mode(.ReleaseFast);
+        builder.standard_build_mode(.ReleaseSafe);
         builder.executable("random", "src/random.zig");
         builder.executable("lottery", "src/lottery.zig");
         builder.executable("roll", "src/roll.zig");
