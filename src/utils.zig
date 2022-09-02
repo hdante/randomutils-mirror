@@ -26,15 +26,30 @@ pub const EXIT_FAILURE = 1;
 pub fn strerror(err: anyerror) []const u8 {
         // Replicate libc's strerror()
         return switch (err) {
-                error.NoSpaceLeft => "No space left on device",
                 error.AccessDenied => "Operation not permitted",
                 error.BrokenPipe => "Broken pipe",
                 error.ConnectionResetByPeer => "Connection reset by peer",
+                error.DeviceBusy => "Device or resource busy",
                 error.DiskQuota => "Disk quota exceeded",
+                error.FileBusy => "Text file busy",
+                error.FileLocksNotSupported => "Operation not supported",
+                error.FileNotFound => "No such file or directory",
+                error.FileTooBig => "File too large",
                 error.InputOutput => "Input/output error",
+                error.IsDir => "Is a directory",
+                error.NameTooLong => "File name too long",
+                error.NoDevice => "No such device",
+                error.NoSpaceLeft => "No space left on device",
+                error.NotDir => "Not a directory",
                 error.NotOpenForWriting => "Bad file descriptor",
-                error.WouldBlock => "Resource temporarily unavailable",
                 error.OutOfMemory => "Cannot allocate memory",
+                error.PathAlreadyExists => "File exists",
+                error.ProcessFdQuotaExceeded => "Too many open files",
+                error.SymLinkLoop => "Too many levels of symbolic links",
+                error.SystemFdQuotaExceeded => "Too many open files in system",
+                error.SystemResources => "Cannot allocate system resources",
+                error.Unseekable => "Illegal seek",
+                error.WouldBlock => "Resource temporarily unavailable",
                 else => "Unknown error",
         };
 }
