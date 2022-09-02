@@ -50,6 +50,11 @@ pub fn strerror(err: anyerror) []const u8 {
                 error.SystemResources => "Cannot allocate system resources",
                 error.Unseekable => "Illegal seek",
                 error.WouldBlock => "Resource temporarily unavailable",
+
+                // Custom errors
+                error.EmptyFile => "File is empty",
+                error.WordNotFound => "Word not found",
+                error.RewindNeeded => "Rewind needed",
                 else => "Unknown error",
         };
 }

@@ -17,6 +17,7 @@
 test {
         _ = @import("generator.zig");
         _ = @import("lottery.zig");
+        _ = @import("mempassword.zig");
         _ = @import("random.zig");
         _ = @import("sysdeps.zig");
         _ = @import("utils.zig");
