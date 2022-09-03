@@ -50,6 +50,12 @@ $ random
 - There are tools for generating a set of independent numbers (`random`) and a
   set of numbers without repetition (`lottery`).
 
+## List of utilities
+- `random`: Generate 64-bit random numbers.
+- `lottery`: Generate random numbers without repetition.
+- `roll`: Generate random numbers using RPG dice notation.
+- `mempassword`: Generate hard to guess, easy to remember passwords.
+
 ## Supported platforms
 **randomutils** is cross-platform should be easily portable to Unix-like systems
 and Windows. However, it has only been tested on Linux at the moment.
