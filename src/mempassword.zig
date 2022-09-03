@@ -186,7 +186,7 @@ fn LineIterator(comptime Reader: type) type { return struct {
 
 const WordMap = struct {
         const MAX_WORDS = 128;
-        const WORD_BUFF_SIZE = 2048;
+        const WORD_BUFF_SIZE = 8192;
 
         const Hash = std.hash.Wyhash;
         const SEED = 11900405843962615283;
