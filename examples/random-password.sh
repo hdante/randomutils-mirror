@@ -9,7 +9,7 @@ DICTIONARY=${DICTIONARY:-"/usr/share/dict/words"}
 
 dictionary_size=$(wc -l "$DICTIONARY" | cut -d ' ' -f 1)
 
-if test ! -f "$RANDOM_"; then
+if ! command -v "$RANDOM_" &> /dev/null; then
 	echo Random program not found. Path searched: "$RANDOM_"
 	exit 1
 fi
