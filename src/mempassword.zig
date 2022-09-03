@@ -402,8 +402,8 @@ fn show_help() !void {
       \\  mempassword -v
       \\
       \\Options:
-      \\   <wordfile>   Text file with words to choose from (default:
-      \\                /usr/share/dict/words).
+      \\   <wordfile>   Text file with words to choose from [default:
+      \\                /usr/share/dict/words].
       \\   -h, -?	Show help message.
       \\   -v		Show program version number.
       \\
