@@ -1,4 +1,5 @@
 #!/bin/sh
+# This is a reimplementation of the mempassword program using a shell script.
 set -e
 
 RANDOM_=${RANDOM_PROG:-random}
