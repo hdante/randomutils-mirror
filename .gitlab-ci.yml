@@ -6,3 +6,7 @@ build:
     - pacman -S zig asciidoc --needed --noconfirm
     - zig build
     - zig build manpages
+test:
+  stage: test
+  script:
+    - zig build test
