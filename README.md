@@ -147,6 +147,18 @@ $ roll 3d6    # generate 3 numbers from 1 to 6
 4 1 5
 ```
 
+The `mempassword` program is used to generate random passwords. A text
+dictionary must be available (by default it reads /usr/share/dict/words):
+
+```
+$ mempassword
+z$#F:-expressway,felicities,folksinger,sedimentation's
+Kd6_:-browner,enrichment's,dog,factorial
+5D'D:-lasted,butlers,barrios,refuting
+(&P.:-secularists,delinquency's,displacement's,reconsigning
+'7<x:-worthy,confidences,railroading's,fizz's
+```
+
 ## Cryptanalysis
 The code was not reviewed by a cryptanalyst.
 
