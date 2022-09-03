@@ -1,0 +1,5 @@
+image: archlinux
+build:
+  stage: build
+  script:
+    - pacman -Syu --noconfirm
