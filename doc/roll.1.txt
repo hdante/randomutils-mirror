@@ -12,7 +12,7 @@ roll - Generate 64-bit random numbers
 
 SYNOPSIS
 --------
-*roll* [_OPTION_] (<x>|<x>d<y>)...
+*roll* [_OPTION_] (_x_|__x__d__y__)...
 
 *roll* *-h*|*-?*
 
