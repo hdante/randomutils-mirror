@@ -53,7 +53,7 @@ $ random
 ## List of utilities
 - `random`: Generate 64-bit random numbers.
 - `lottery`: Generate random numbers without repetition.
-- `roll`: Generate random numbers using RPG dice notation.
+- `roll`: Generate random numbers using [RPG dice notation][8].
 - `mempassword`: Generate hard to guess, easy to remember passwords.
 
 ## Supported platforms
@@ -177,3 +177,4 @@ the extent permitted by law.
 [5]: https://asciidoc.org/
 [6]: https://www.gnu.org/software/coreutils/manual/html_node/od-invocation.html
 [7]: https://www.gnu.org/licenses/gpl-3.0.en.html
+[8]: https://en.wikipedia.org/wiki/Dice_notation
