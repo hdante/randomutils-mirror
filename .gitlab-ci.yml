@@ -3,3 +3,6 @@ build:
   stage: build
   script:
     - pacman -Syu --noconfirm
+    - pacman -S zig asciidoc --needed --noconfirm
+    - zig build
+    - zig build manpages
