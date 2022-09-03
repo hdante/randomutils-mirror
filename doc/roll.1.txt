@@ -55,7 +55,7 @@ the last ones are used. The list of options follows:
   have values between 1 and 13, in the following order: Ace, 2, 3, 4, 5, 6, 7,
   8, 9, 10, Jack, Queen, King. Smaller ranges omit the higher valued cards. The
   characters are always encoded in the UTF-8 format. The suits on the cards are
-  random andd may be one of: Spades, Hearts, Diamonds or Clubs.
+  random and may be one of: Spades, Hearts, Diamonds or Clubs.
 *-h*, *-?*::
   Show help message instead of generating random numbers.
 *-v*::
