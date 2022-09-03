@@ -7,3 +7,6 @@ build:
     - zig build
     - zig build manpages
     - zig build test
+  artifacts:
+    paths:
+      - zig-out/
