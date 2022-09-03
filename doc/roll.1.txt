@@ -4,7 +4,7 @@ ROLL(1)
 :man source: randomutils
 :man version: 53.10.19
 :man manual: General Commands Manual
-:revdate: August 2022
+:revdate: September 2022
 
 NAME
 ----
