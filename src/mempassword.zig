@@ -20,6 +20,7 @@ const assert = std.debug.assert;
 const cwd = std.fs.cwd;
 const io = std.io;
 const mem = std.mem;
+const parseUnsigned = std.fmt.parseUnsigned;
 const sort = std.sort;
 const stderr = io.getStdErr().writer();
 const stdout = io.getStdOut().writer();
@@ -338,6 +339,13 @@ fn run(cfg: Config) !void {
         try writer.context.flush();
 }
 
+fn parse_arg(comptime T: type, arg: ?(anyerror![:0]const u8)) !T {
+        const text = try (arg orelse return error.InvalidParameter);
+        const value = try parseUnsigned(T, text, 0);
+        return value;
+}
+
+
 fn parse_cmdline(cfg: *Config) !void {
         const ARENA_SIZE = @minimum(PATH_MAX + 2048, 1<<18);
         var arena: [ARENA_SIZE]u8 = undefined;
@@ -357,6 +365,9 @@ fn parse_cmdline(cfg: *Config) !void {
                 if (argidx > 0 and arg[0] == '-' and !forcearg) {
                         for (arg[1..]) |ch| {
                                 switch (ch) {
+                                        'n' => cfg.num_passwords = try parse_arg(u16, args.next()),
+                                        's' => cfg.num_symbols = try parse_arg(u16, args.next()),
+                                        'w' => cfg.num_words = try parse_arg(u16, args.next()),
                                         'h', '?' => cfg.help = true,
                                         'v' => cfg.version = true,
                                         '-' => forcearg = true,
@@ -380,6 +391,15 @@ fn parse_cmdline(cfg: *Config) !void {
                 std.mem.copy(u8, &cfg.word_file, UNIX_WORDS);
                 cfg.word_file_len = UNIX_WORDS.len;
         }
+
+        if (cfg.num_words < 1 or cfg.num_words > WordMap.MAX_WORDS)
+                return error.InvalidParameters;
+
+        if (cfg.num_passwords < 1)
+                return error.InvalidParameters;
+
+        if (cfg.num_symbols < 1)
+                return error.InvalidParameters;
 }
 
 fn invalid_parameters() void {
@@ -397,13 +417,16 @@ fn show_help() !void {
       \\Generate easy to memorize, hard to guess password.
       \\
       \\Usage:
-      \\  mempassword [--] [<wordfile>]
+      \\  mempassword [OPTION] [--] [<wordfile>]
       \\  mempassword -h|-?
       \\  mempassword -v
       \\
       \\Options:
       \\   <wordfile>   Text file with words to choose from [default:
       \\                /usr/share/dict/words].
+      \\   -n <num>     Number of passwords [default: 5].
+      \\   -s <sym>     Number of symbols per password [default: 4].
+      \\   -w <words>   Number of words per password [default: 4].
       \\   -h, -?	Show help message.
       \\   -v		Show program version number.
       \\
