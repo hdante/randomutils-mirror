@@ -39,7 +39,7 @@ const Format = enum {
 const Config = struct {
         first: u64 = 0,
         last: u64 = maxInt(u64),
-        count: u64 = 1,
+        count: usize = 1,
         format: Format = .d64,
         help: bool = false,
         version: bool = false,
@@ -55,7 +55,7 @@ fn print_one(cfg: Config, buffer: []u8, value: u64) usize {
         return utils.fmt_d(buffer, value);
 }
 
-fn more(cfg: Config, gen: *Generator, count: u64) !usize {
+fn more(cfg: Config, gen: *Generator, count: usize) !usize {
         // Hot loop is in this function. Loop condition is kept very simple.
         const MAX_NUMBERS = 700;
         const MAX_LENGTH = 21;
@@ -146,7 +146,8 @@ fn parse_cmdline(cfg: *Config) !void {
                         const value = try parseUnsigned(u64, arg, 0);
 
                         if (argidx == 1) {
-                                cfg.count = value;
+                                if (value > maxInt(usize)) return error.InvalidParameters;
+                                cfg.count = @truncate(usize, value);
                                 if (cfg.count == 0) return error.InvalidParameters;
                         }
                         else if (argidx == 2) {

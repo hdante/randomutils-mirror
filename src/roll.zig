@@ -59,11 +59,11 @@ const CARDS = [4][13][]const u8 {
 fn print_value(cfg: Config, gen: *Generator, roll: Roll, value: u64) !void {
         switch (cfg.format) {
                 .decimal => try stdout.print("{}", .{value}),
-                .dice => try stdout.writeAll(DICE[value-1]),
+                .dice => try stdout.writeAll(DICE[@truncate(usize, value-1)]),
                 .cards => {
                         gen.randint_set_range(0, 3);
-                        const suit = try gen.randint();
-                        try stdout.writeAll(CARDS[suit][value-1]);
+                        const suit = @truncate(usize, try gen.randint());
+                        try stdout.writeAll(CARDS[suit][@truncate(usize, value-1)]);
                         gen.randint_set_range(1, roll.max);
                 },
         }

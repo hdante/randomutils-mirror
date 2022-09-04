@@ -107,13 +107,13 @@ pub fn fmt_d(buffer: []u8, value: u64) usize {
         var v = value;
         var l = length;
         while (l > 1) : (l -= 2) {
-                var r = v % 100;
+                var r = @truncate(usize, v % 100);
                 v /= 100;
                 // No safety check here, slice must have the proper range.
                 @memcpy(buffer[l-2..l].ptr, DIGITS[r*2..r*2+2].ptr, 2);
         }
         if (l == 1)
-                buffer[0] = DIGITS[(v % 10)*2+1];
+                buffer[0] = DIGITS[@truncate(usize, (v % 10)*2+1)];
 
         return length;
 }
@@ -131,7 +131,7 @@ pub fn fmt_x(buffer: []u8, value: u64, upper: bool) usize {
         var v = value;
         var l = length;
         while (l > 0) : (l -= 1) {
-                var r = v % 16;
+                var r = @truncate(usize, v % 16);
                 v /= 16;
                 buffer[l-1] = DIGITS[u][r];
         }
@@ -154,11 +154,11 @@ pub fn fmt_base64url(buffer: []u8, value: u64) usize {
         var i: usize = 0;
         var shift: u6 = 58;
         while (i < 10) : (i += 1) {
-                buffer[i] = DIGITS[(value >> shift) & 0x3f];
+                buffer[i] = DIGITS[@truncate(usize, (value >> shift) & 0x3f)];
                 shift -%= 6;
         }
 
-        buffer[10] = DIGITS[(value << 2) & 0x3f];
+        buffer[10] = DIGITS[@truncate(usize, (value << 2) & 0x3f)];
 
         return 11;
 }

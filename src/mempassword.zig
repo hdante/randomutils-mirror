@@ -96,7 +96,7 @@ fn LineIterator(comptime Reader: type) type { return struct {
         const V = 128;
         buff: [65536] u8 align(V),
         buff_len: usize,
-        buff_pos: u64,
+        buff_pos: usize,
         line: u64,
         file: Reader,
 
@@ -146,7 +146,7 @@ fn LineIterator(comptime Reader: type) type { return struct {
 
                         // If line is found, switch to byte-by-byte loop
                         if (next_line >= index) {
-                                var p: u64 = self.buff_pos;
+                                var p = self.buff_pos;
                                 var l: u64 = self.line;
                                 while (l < index) : (p += 1) {
                                         if (self.buff[p] == '\n') l += 1;

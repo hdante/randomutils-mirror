@@ -42,11 +42,11 @@ const Config = struct {
 };
 
 const BitAddress = struct {
-        byte: Number,
+        byte: u32,
         bit: Number,
 };
 
-fn bit_address(idx: Number) BitAddress {
+fn bit_address(idx: u32) BitAddress {
         const byte = idx / NUMBER_BITS;
         const bit = @intCast(LogNumber, idx % NUMBER_BITS);
         const v = @as(Number, 1) << bit;
@@ -71,7 +71,7 @@ fn run(cfg: Config) !void {
         var i: u32 = 0;
         while (i < cfg.count) {
                 const r = try gen.randint();
-                const idx = r-gen.first;
+                const idx = @truncate(u32, r-gen.first);
                 const addr = bit_address(idx);
 
                 if (check_bit(addr)) {
