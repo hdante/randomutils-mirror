@@ -7,6 +7,10 @@ build:
     - zig build
     - zig build manpages
     - zig build test
+    - zig-out/bin/random
+    - zig-out/bin/lottery
+    - zig-out/bin/roll
+    - zig-out/bin/mempassword test/words.slice
   artifacts:
     paths:
       - zig-out/

@@ -12,3 +12,7 @@ jobs:
       - run: zig build
       - run: zig build manpages
       - run: zig build test
+      - run: zig-out/bin/random
+      - run: zig-out/bin/lottery
+      - run: zig-out/bin/roll
+      - run: zig-out/bin/mempassword test/words.slice
