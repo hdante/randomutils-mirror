@@ -501,9 +501,14 @@ fn test_chacha_test_draft_agl_tls_chacha20poly1305(comptime Type: type) !void {
         var chacha = Type.init();
         defer chacha.deinit();
         const bytes = mem.sliceAsBytes(chacha.state[Type.HEADER_COUNT..]);
+
+        for (chacha.state[0..Type.HEADER_COUNT]) |*v| {
+                v.* = mem.littleToNative(u32, v.*);
+        }
+
         for (INPUT) |input, i| {
                 @memcpy(bytes.ptr, &input, 48);
-                for (chacha.state) |*v| {
+                for (chacha.state[Type.HEADER_COUNT..]) |*v| {
                         v.* = mem.littleToNative(u32, v.*);
                 }
                 var buffer: [16]u32 = undefined;
