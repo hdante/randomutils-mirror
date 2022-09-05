@@ -1,0 +1,14 @@
+name: Test on macOS
+on: [push]
+env:
+  XML_CATALOG_FILES: /usr/local/etc/xml/catalog
+jobs:
+  test-on-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: brew install zig asciidoc
+      - run: zig build
+      - run: zig build manpages
+      - run: zig build test
