@@ -64,6 +64,7 @@ device][9].  It has been tested in the following environments:
 - Linux, amd64
 - Linux, arm (armv6 and armv7)
 - Linux, mips (mips32)
+- Linux, riscv64 (qemu rv64gc, emulated)
 - macOS, amd64
 - Windows, amd64
 
