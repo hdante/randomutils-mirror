@@ -57,8 +57,14 @@ $ random
 - `mempassword`: Generate hard to guess, easy to remember passwords.
 
 ## Supported platforms
-**randomutils** is cross-platform should be easily portable to Unix-like systems
-and Windows. However, it has only been tested on Linux at the moment.
+**randomutils** is cross-platform and should be easily portable to Unix-like
+systems, as long as they provide an entropy source, such as the [`urandom`
+device][9].  It has been tested in the following environments:
+
+- Linux, amd64
+- Linux, arm (armv6 and armv7)
+- macOS, amd64
+- Windows, amd64
 
 ## Build requirements
 - [Zig][4] compiler (tested with version 0.9.1)
@@ -178,3 +184,4 @@ the extent permitted by law.
 [6]: https://www.gnu.org/software/coreutils/manual/html_node/od-invocation.html
 [7]: https://www.gnu.org/licenses/gpl-3.0.en.html
 [8]: https://en.wikipedia.org/wiki/Dice_notation
+[9]: https://en.wikipedia.org/wiki//dev/random
