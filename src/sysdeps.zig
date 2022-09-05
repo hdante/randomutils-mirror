@@ -47,7 +47,8 @@ pub const ArgvIterator = struct {
                         // Zig < 0.10 and POSIX OS
                         return self.inner.nextPosix() orelse null;
                 }
-                return self.inner.next(self.allocator);
+                // Work around compiler bug by repacking the result
+                return self.inner.next(self.allocator) orelse null;
         }
 };
 

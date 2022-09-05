@@ -22,8 +22,8 @@ const io = std.io;
 const mem = std.mem;
 const parseUnsigned = std.fmt.parseUnsigned;
 const sort = std.sort;
-const stderr = io.getStdErr().writer();
-const stdout = io.getStdOut().writer();
+var stdout: std.fs.File.Writer = undefined;
+var stderr: std.fs.File.Writer = undefined;
 
 const generator = @import("generator.zig");
 const sysdeps = @import("sysdeps.zig");
@@ -446,6 +446,8 @@ var global_cfg: Config = undefined;
 
 fn guarded_main() !u8 {
         global_cfg = Config.init();
+        stdout = std.io.getStdOut().writer();
+        stderr = std.io.getStdErr().writer();
 
         parse_cmdline(&global_cfg) catch {
                 invalid_parameters();

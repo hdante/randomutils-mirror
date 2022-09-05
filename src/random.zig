@@ -18,8 +18,8 @@ const std = @import("std");
 const FixedBufferAllocator = std.heap.FixedBufferAllocator;
 const maxInt = std.math.maxInt;
 const parseUnsigned = std.fmt.parseUnsigned;
-const stdout = std.io.getStdOut();
-const stderr = std.io.getStdErr().writer();
+var stdout: std.fs.File = undefined;
+var stderr: std.fs.File.Writer = undefined;
 
 const generator = @import("generator.zig");
 const sysdeps = @import("sysdeps.zig");
@@ -216,6 +216,8 @@ fn show_version() !void {
 
 fn guarded_main() !u8 {
         var cfg = Config {};
+        stdout = std.io.getStdOut();
+        stderr = std.io.getStdErr().writer();
 
         parse_cmdline(&cfg) catch {
                 invalid_parameters();
