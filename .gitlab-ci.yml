@@ -1,6 +1,8 @@
 image: archlinux
 build:
   stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH
   script:
     - pacman -Syu --noconfirm
     - pacman -S zig asciidoc --needed --noconfirm
@@ -11,6 +13,44 @@ build:
     - zig-out/bin/lottery
     - zig-out/bin/roll
     - zig-out/bin/mempassword test/words.slice
-  artifacts:
-    paths:
-      - zig-out/
+
+release:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_TAG
+  variables:
+    PROJ: randomutils
+    VER: 53.10.19
+    PROJVER: $PROJ-$VER
+    EXT: tar.gz
+    UPLOAD: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/$PROJ/$VER
+  script:
+    - pacman -Syu --noconfirm
+    - pacman -S zig asciidoc --needed --noconfirm
+    - 'mkdir -p $PROJVER/share/doc/$PROJ'
+    - 'cp -r examples $PROJVER/share/doc/$PROJ'
+    - 'cp README.md $PROJVER/share/doc/$PROJ'
+    - 'zig build -p $PROJVER manpages'
+    - 'zig build -Dtarget=x86_64-linux -p $PROJVER'
+    - 'tar -czvf $PROJVER-linux-amd64.$EXT $PROJVER'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PROJVER-linux-amd64.$EXT $UPLOAD/$PROJVER-linux-amd64.$EXT'
+    - 'rm -rf $PROJVER/bin'
+    - 'zig build -Dtarget=arm-linux -Dcpu=arm1136j_s -p $PROJVER'
+    - 'tar -czvf $PROJVER-linux-armv6.$EXT $PROJVER'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PROJVER-linux-armv6.$EXT $UPLOAD/$PROJVER-linux-armv6.$EXT'
+    - 'rm -rf $PROJVER/bin'
+    - 'zig build -Dtarget=mips-linux -p $PROJVER'
+    - 'tar -czvf $PROJVER-linux-mips.$EXT $PROJVER'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PROJVER-linux-mips.$EXT $UPLOAD/$PROJVER-linux-mips.$EXT'
+    - 'rm -rf $PROJVER/bin'
+    - 'zig build -Dtarget=riscv64-linux -p $PROJVER'
+    - 'tar -czvf $PROJVER-linux-riscv64.$EXT $PROJVER'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PROJVER-linux-riscv64.$EXT $UPLOAD/$PROJVER-linux-riscv64.$EXT'
+    - 'rm -rf $PROJVER/bin'
+    - 'zig build -Dtarget=x86_64-macos -p $PROJVER'
+    - 'tar -czvf $PROJVER-macos-amd64.$EXT $PROJVER'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PROJVER-macos-amd64.$EXT $UPLOAD/$PROJVER-macos-amd64.$EXT'
+    - 'rm -rf $PROJVER/bin'
+    - 'zig build -Dtarget=x86_64-windows -p $PROJVER'
+    - 'tar -czvf $PROJVER-windows-amd64.$EXT $PROJVER'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PROJVER-windows-amd64.$EXT $UPLOAD/$PROJVER-windows-amd64.$EXT'
